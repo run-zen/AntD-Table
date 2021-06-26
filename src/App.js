@@ -33,7 +33,11 @@ function App() {
             key: "age",
             className: "draggable",
             width: 200,
-
+            filters: [
+                { text: "18+", value: "18" },
+                { text: "30+", value: "30" },
+            ],
+            onFilter: (value, record) => record.age >= value,
             sorter: (a, b) => a.age - b.age,
         },
         {
@@ -62,7 +66,7 @@ function App() {
         {
             key: "1",
             name: "Bohn Brown",
-            age: 32,
+            age: 25,
             address: "New York No. 1 Lake Park",
             tags: ["nice", "developer"],
         },
@@ -83,7 +87,7 @@ function App() {
         {
             key: "4",
             name: "Zoe Zal",
-            age: 18,
+            age: 16,
             address: "Sidney No. 1 Lake Park",
             tags: ["cool", "teacher"],
         },
@@ -106,16 +110,12 @@ function App() {
     return (
         <Layout className="layout">
             <Header>
-                <div className="logo" />
                 <Menu
                     theme="dark"
                     mode="horizontal"
-                    defaultSelectedKeys={["2"]}
+                    defaultSelectedKeys={["1"]}
                 >
-                    {new Array(3).fill(null).map((_, index) => {
-                        const key = index + 1;
-                        return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
-                    })}
+                    <Menu.Item key="1">{`Home`}</Menu.Item>
                 </Menu>
             </Header>
             <Content style={{ padding: "0 50px" }}>
@@ -128,6 +128,7 @@ function App() {
                             columns={tableColumns}
                             dataSource={data}
                             size="middle"
+                            pagination={{ position: ["none"] }}
                         />
                     </ReactDragListView>
                 </div>
