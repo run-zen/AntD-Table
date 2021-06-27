@@ -6,7 +6,6 @@ tr th.draggable {
 }
 
 .sideNav-btn {
-    border: 2px solid red;
     overflow: hidden;
     padding-top: 5px;
     position: absolute;
