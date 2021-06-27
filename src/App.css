@@ -1,3 +1,51 @@
+.site-layout-content {
+    height: 100vh;
+}
 tr th.draggable {
     cursor: move;
+}
+
+.sideNav-btn {
+    color: white;
+    text-align: center;
+    width: 100px;
+    margin-left: auto;
+    cursor: pointer;
+}
+.sideNav-btn:hover {
+    background: #1890ff;
+    transition-duration: 0.3s;
+}
+.sideNav {
+    color: white;
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0px;
+    background-color: #001529;
+    overflow-x: hidden;
+    transition-duration: 0.5s;
+    padding-left: 20px;
+    font-size: 1.8em;
+}
+
+.sideNav div {
+    padding-left: 20px;
+}
+
+.sideNav span {
+    cursor: pointer;
+    display: inline-block;
+    background: transparent;
+    height: fit-content;
+    margin-top: 0px;
+    padding-top: 0px;
+    font-size: 1.8em;
+    margin-bottom: 10%;
+}
+.sideNav .closebtn:hover {
+    transform: scale(1.3);
+    transition-duration: 0.4s;
 }
