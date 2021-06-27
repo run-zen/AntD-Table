@@ -6,27 +6,65 @@ tr th.draggable {
 }
 
 .sideNav-btn {
+    overflow: hidden;
+    padding-top: 5px;
+    position: absolute;
+    width: 60px;
+    height: 50px;
+    z-index: 21;
+    position: fixed;
+    top: 5px;
+    right: 0px;
     color: white;
     text-align: center;
-    width: 100px;
     margin-left: auto;
+    margin-right: 0;
     cursor: pointer;
 }
 .sideNav-btn:hover {
-    background: #1890ff;
-    transition-duration: 0.3s;
+    transform: scale(1.15);
+    transition: 0.3s ease-out;
 }
+.sideNav-btn div {
+    display: block;
+    position: absolute;
+    right: 25px;
+    background-color: white;
+    width: 30px;
+    height: 4px;
+    border-radius: 5px;
+    margin-top: 6px;
+
+    transition: 0.3s ease-in-out;
+}
+.sideNav-btn div:nth-child(1) {
+    top: 5px;
+    transform-origin: 17px 6px;
+    transform: rotateZ(0deg);
+}
+.sideNav-btn div:nth-child(2) {
+    top: 14px;
+    opacity: 1;
+    transform: translateX(0px);
+}
+.sideNav-btn div:nth-child(3) {
+    margin-top: 24px;
+    transform-origin: 17px -3px;
+    transform: rotateZ(0deg);
+}
+
 .sideNav {
     color: white;
     height: 100vh;
     width: 250px;
     position: fixed;
-    z-index: 100;
+    z-index: 10;
     top: 0;
     right: 0px;
-    background-color: #001529;
+    background-color: #000d1a;
     overflow-x: hidden;
-    transition-duration: 0.5s;
+    transition: 0.3s ease-in-out;
+    padding-top: 80px;
     padding-left: 20px;
     font-size: 1.8em;
 }

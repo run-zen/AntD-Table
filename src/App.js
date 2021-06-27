@@ -9,15 +9,16 @@ const columns = [
     {
         title: "Sl No. (fixed column)",
         dataIndex: "key",
-        width: 100,
+        fixed: "left",
         key: "key",
+        width: 100,
     },
     {
         title: "Name",
         dataIndex: "name",
         key: "name",
         className: "draggable",
-        width: 200,
+
         filters: [
             { text: "Aoe", value: "Aoe" },
             { text: "Cim", value: "Cim" },
@@ -31,7 +32,7 @@ const columns = [
         dataIndex: "age",
         key: "age",
         className: "draggable",
-        width: 200,
+
         filters: [
             { text: "18+", value: "18" },
             { text: "30+", value: "30" },
@@ -44,7 +45,6 @@ const columns = [
         dataIndex: "address",
         key: "address",
         className: "draggable",
-        width: 200,
     },
 
     {
@@ -91,13 +91,15 @@ const data = [
         tags: ["cool", "teacher"],
     },
 ];
+const openSideNav = { right: "0px" };
+const closeSideNav = { right: "-250px" };
+const rotateTop = { transform: "rotateZ(-135deg)" };
+const rotateBottom = { transform: "rotateZ(135deg)" };
+const moveMiddle = { transform: "translateX(35px)", opacity: "0" };
 
 function App() {
     const [tableColumns, setTablecolumns] = useState([...columns]);
     const [toggleNav, setToggleNav] = useState(false);
-
-    const openSideNav = { right: "0px" };
-    const closeSideNav = { right: "-250px" };
 
     const dragProps = {
         onDragEnd(fromIndex, toIndex) {
@@ -111,7 +113,6 @@ function App() {
     };
 
     function toggleSidebar() {
-        console.log(`open side bar`);
         setToggleNav((prev) => !prev);
     }
 
@@ -121,10 +122,6 @@ function App() {
                 className="sideNav"
                 style={toggleNav ? openSideNav : closeSideNav}
             >
-                <span class="closebtn" onClick={toggleSidebar}>
-                    &times;
-                </span>
-
                 <div>About</div>
                 <div>Services</div>
                 <div>Clients</div>
@@ -138,13 +135,22 @@ function App() {
                         defaultSelectedKeys={["1"]}
                     >
                         <Menu.Item key="1">{`Home`}</Menu.Item>
-                        <div
-                            key="2"
-                            className="sideNav-btn"
-                            onClick={toggleSidebar}
-                        >{`Open sidebar`}</div>
                     </Menu>
                 </Header>
+                <div
+                    key="2"
+                    className="sideNav-btn"
+                    onClick={toggleSidebar}
+                    style={
+                        toggleNav
+                            ? { position: "fixed" }
+                            : { position: "absolute" }
+                    }
+                >
+                    <div style={toggleNav ? rotateTop : null}></div>
+                    <div style={toggleNav ? moveMiddle : null}></div>
+                    <div style={toggleNav ? rotateBottom : null}></div>
+                </div>
                 <Content style={{ padding: "0 50px" }}>
                     <Breadcrumb style={{ margin: "16px 0" }}>
                         <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -156,6 +162,7 @@ function App() {
                                 dataSource={data}
                                 size="middle"
                                 pagination={{ position: ["none"] }}
+                                scroll={{ x: "max-content" }}
                             />
                         </ReactDragListView>
                     </div>
