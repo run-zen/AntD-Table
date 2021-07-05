@@ -1,11 +1,11 @@
 import React from "react";
-import { Drawer, Form, Input, InputNumber, Button } from "antd";
+import { Drawer, Form, Input, InputNumber, Button, Row, Col } from "antd";
 const { TextArea } = Input;
 
 export default function AddDrawer({ onClose, visible, onSubmit }) {
     const [form] = Form.useForm();
     const onFinish = (values) => {
-        // form.resetFields();
+        form.resetFields();
         onSubmit(values);
     };
 
@@ -15,87 +15,92 @@ export default function AddDrawer({ onClose, visible, onSubmit }) {
     const onReset = () => {
         form.resetFields();
     };
+
     return (
-        <Drawer
-            title="Add New Row"
-            placement="right"
-            closable={false}
-            onClose={onClose}
-            visible={visible}
-            width={500}
-        >
-            <Form
-                form={form}
-                name="basic"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
-                initialValues={{
-                    remember: true,
-                }}
-                onFinish={(values) => onFinish(values)}
-                onFinishFailed={onFinishFailed}
-                labelAlign="left"
-            >
-                <Form.Item
-                    label="Name"
-                    name="name"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please input your name!",
-                        },
-                    ]}
+        <Row>
+            <Col lg={{ span: 10, offset: 14 }}>
+                <Drawer
+                    title="Add New Row"
+                    placement="right"
+                    closable={true}
+                    onClose={onClose}
+                    visible={visible}
+                    width={"40%"}
                 >
-                    <Input />
-                </Form.Item>
-
-                <Form.Item
-                    label="Age"
-                    name="age"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please input your age!",
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </Form.Item>
-                <Form.Item
-                    label="Address"
-                    name="address"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please input your address!",
-                        },
-                    ]}
-                >
-                    <TextArea rows={2} />
-                </Form.Item>
-
-                <Form.Item
-                    wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                    }}
-                >
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                    <Button
-                        htmlType="button"
-                        onClick={onReset}
-                        style={{ marginLeft: "8px" }}
+                    <Form
+                        form={form}
+                        name="basic"
+                        labelCol={{
+                            span: 8,
+                        }}
+                        wrapperCol={{
+                            span: 16,
+                        }}
+                        initialValues={{
+                            remember: true,
+                        }}
+                        onFinish={(values) => onFinish(values)}
+                        onFinishFailed={onFinishFailed}
+                        labelAlign="left"
+                        layout="vertical"
                     >
-                        Reset
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Drawer>
+                        <Form.Item
+                            label="Name"
+                            name="name"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your name!",
+                                },
+                            ]}
+                        >
+                            <Input placeholder={"name"} />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Age"
+                            name="age"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your age!",
+                                },
+                            ]}
+                        >
+                            <InputNumber placeholder={"age"} />
+                        </Form.Item>
+                        <Form.Item
+                            label="Address"
+                            name="address"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your address!",
+                                },
+                            ]}
+                        >
+                            <TextArea rows={2} placeholder={"address"} />
+                        </Form.Item>
+
+                        <Form.Item
+                            wrapperCol={{
+                                span: 16,
+                            }}
+                        >
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                            <Button
+                                htmlType="button"
+                                onClick={onReset}
+                                style={{ marginLeft: "8px" }}
+                            >
+                                Reset
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Drawer>
+            </Col>
+        </Row>
     );
 }
