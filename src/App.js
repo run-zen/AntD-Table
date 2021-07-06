@@ -5,8 +5,9 @@ import Highlighter from "react-highlight-words";
 import { PlusCircleFilled, SearchOutlined } from "@ant-design/icons";
 import ReactDragListView from "react-drag-listview";
 import AddDrawer from "./components/AddDrawer";
-import { useSelector, useDispatch } from "react-redux";
-import { addPerson, deletePerson } from "./redux/actions";
+// import { useSelector, useDispatch } from "react-redux";
+// import { addPerson, deletePerson } from "./redux/actions";
+import { v4 } from "uuid";
 
 const { Header, Content, Footer } = Layout;
 
@@ -60,9 +61,44 @@ const columns = [
     },
 ];
 
+const data = [
+    {
+        id: v4(),
+        key: v4(),
+        name: "Bohn Brown",
+        age: 25,
+        address: "New York No. 1 Lake Park",
+        tags: ["nice", "developer"],
+    },
+    {
+        id: v4(),
+        key: v4(),
+        name: "Cim Green",
+        age: 42,
+        address: "London No. 1 Lake Park",
+        tags: ["loser"],
+    },
+    {
+        id: v4(),
+        key: v4(),
+        name: "Aoe Black",
+        age: 32,
+        address: "Sidney No. 1 Lake Park",
+        tags: ["cool", "teacher"],
+    },
+    {
+        id: v4(),
+        key: v4(),
+        name: "Zoe Zal",
+        age: 16,
+        address: "Sidney No. 1 Lake Park",
+        tags: ["cool", "teacher"],
+    },
+];
+
 function App() {
-    const people = useSelector((state) => state.people);
-    const dispatch = useDispatch();
+    // const people = useSelector((state) => state.people);
+    // const dispatch = useDispatch();
     // const deleteColumn = {
     //     title: "Action",
     //     key: "action",
@@ -81,6 +117,7 @@ function App() {
     // };
 
     const [tableColumns, setTablecolumns] = useState([...columns]);
+    const [tableData, setTableData] = useState([...data]);
     const [toggleNav, setToggleNav] = useState(false);
     const searchInput = useRef(null);
     const [search, setSearch] = useState({ searchText: "", searchColumn: "" });
@@ -231,9 +268,7 @@ function App() {
                         <Space size="middle">
                             <span
                                 className="delete-row"
-                                onClick={() =>
-                                    dispatch(deletePerson(record.id))
-                                }
+                                onClick={() => deleteRow(record.id)}
                             >
                                 Delete
                             </span>
@@ -244,7 +279,7 @@ function App() {
                 },
             ];
         });
-    }, [dispatch]);
+    }, []);
 
     const dragProps = {
         onDragEnd(fromIndex, toIndex) {
@@ -269,8 +304,22 @@ function App() {
         setVisibleDrawer(false);
     };
 
+    const deleteRow = (id) => {
+        setTableData((prev) => {
+            let data = [...prev];
+            data = data.filter((el) => el.id !== id);
+            return [...data];
+        });
+    };
+
     const OnSubmit = (values) => {
-        dispatch(addPerson(values));
+        // dispatch(addPerson(values));
+        let row = { ...values };
+        row.id = v4();
+        row.key = v4();
+        setTableData((prev) => {
+            return [...prev, { ...row }];
+        });
     };
 
     return (
@@ -329,7 +378,7 @@ function App() {
                         <ReactDragListView {...dragProps}>
                             <Table
                                 columns={tableColumns}
-                                dataSource={people}
+                                dataSource={tableData}
                                 size="middle"
                                 pagination={{ position: ["none"] }}
                                 scroll={{ x: "max-content", y: 440 }}
