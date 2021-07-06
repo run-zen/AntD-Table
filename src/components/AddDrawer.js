@@ -5,7 +5,7 @@ const { TextArea } = Input;
 export default function AddDrawer({ onClose, visible, onSubmit }) {
     const [form] = Form.useForm();
     const onFinish = (values) => {
-        form.resetFields();
+        // form.resetFields();
         onSubmit(values);
     };
 
