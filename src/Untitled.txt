@@ -1,0 +1,116 @@
+title: "Action",
+            key: "action",
+            render: (text, record) => (
+                <Space size="middle">
+                    <span
+                        className="delete-row"
+                        onClick={() => deleteRow(record.id)}
+                    >
+                        Delete
+                    </span>
+                </Space>
+            ),
+            className: "draggable",
+            width: 200,
+            
+            
+    const getColumnSearchProps = useCallback(
+        (dataIndex) => ({
+            width: 300,
+            filterDropdown: ({
+                setSelectedKeys,
+                selectedKeys,
+                confirm,
+                clearFilters,
+            }) => (
+                <div style={{ padding: 8 }}>
+                    <Input
+                        ref={(node) => (searchInput.current = node)}
+                        placeholder={`Search ${dataIndex}`}
+                        value={selectedKeys[0]}
+                        onChange={(e) =>
+                            setSelectedKeys(
+                                e.target.value ? [e.target.value] : []
+                            )
+                        }
+                        onPressEnter={() =>
+                            handleSearch(selectedKeys, confirm, dataIndex)
+                        }
+                        style={{ marginBottom: 8, display: "block" }}
+                        focus={{ cursor: "all" }}
+                    />
+                    <Space>
+                        <Button
+                            type="primary"
+                            onClick={() =>
+                                handleSearch(selectedKeys, confirm, dataIndex)
+                            }
+                            icon={<SearchOutlined />}
+                            size="small"
+                            style={{ width: 90 }}
+                        >
+                            Search
+                        </Button>
+                        <Button
+                            onClick={() => handleReset(clearFilters)}
+                            size="small"
+                            style={{ width: 90 }}
+                        >
+                            Reset
+                        </Button>
+                        <Button
+                            type="link"
+                            size="small"
+                            onClick={() => {
+                                confirm({ closeDropdown: false });
+                                setSearch({
+                                    searchText: selectedKeys[0],
+                                    searchColumn: dataIndex,
+                                });
+                                // setSearchText(selectedKeys[0]);
+                                // setSearchedColumn(dataIndex);
+                                // this.setState({
+                                //     searchText: selectedKeys[0],
+                                //     searchedColumn: dataIndex,
+                                // });
+                            }}
+                        >
+                            Filter
+                        </Button>
+                    </Space>
+                </div>
+            ),
+            filterIcon: (filtered) => (
+                <SearchOutlined
+                    style={{ color: filtered ? "#1890ff" : undefined }}
+                />
+            ),
+            onFilter: (value, record) =>
+                record[dataIndex]
+                    ? record[dataIndex]
+                          .toString()
+                          .toLowerCase()
+                          .includes(value.toLowerCase())
+                    : "",
+            onFilterDropdownVisibleChange: (visible) => {
+                if (visible) {
+                    setTimeout(() => searchInput.current.select(), 100);
+                }
+            },
+            render: (text) =>
+                stateRef.current.searchColumn === dataIndex ? (
+                    <Highlighter
+                        highlightStyle={{
+                            backgroundColor: "#ffc069",
+                            padding: 0,
+                        }}
+                        searchWords={[stateRef.current.searchText]}
+                        autoEscape={true}
+                        textToHighlight={text ? text.toString() : ""}
+                    />
+                ) : (
+                    text
+                ),
+        }),
+        []
+    );

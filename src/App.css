@@ -93,7 +93,8 @@ tr th.draggable {
     transition-duration: 0.4s;
 }
 .delete-row {
-    color: blue;
+    color: rgb(10, 10, 10);
+    font-size: 20px;
     cursor: pointer;
 }
 .add-btn {
@@ -109,4 +110,7 @@ tr th.draggable {
 
 .ant-drawer-content-wrapper {
     width: 50vw;
+}
+.delete-column {
+    text-align: center;
 }

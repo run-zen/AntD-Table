@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Space } from "antd";
-import { Layout, Menu, Breadcrumb, Button, Input } from "antd";
 import Highlighter from "react-highlight-words";
-import { PlusCircleFilled, SearchOutlined } from "@ant-design/icons";
+import { Layout, Menu, Breadcrumb, Button, Input } from "antd";
+import {
+    PlusCircleFilled,
+    SearchOutlined,
+    DeleteFilled,
+} from "@ant-design/icons";
 import ReactDragListView from "react-drag-listview";
 import AddDrawer from "./components/AddDrawer";
-// import { useSelector, useDispatch } from "react-redux";
-// import { addPerson, deletePerson } from "./redux/actions";
 import { v4 } from "uuid";
 
 const { Header, Content, Footer } = Layout;
@@ -18,46 +20,20 @@ const rotateBottom = { transform: "rotateZ(135deg)" };
 const moveMiddle = { transform: "translateX(35px)", opacity: "0" };
 
 const columns = [
-    // {
-    //     title: "Sl No. (fixed column)",
-    //     dataIndex: "key",
-    //     fixed: "left",
-    //     key: "key",
-    //     width: 100,
-    // },
     {
         title: "Name",
         dataIndex: "name",
         key: "name",
-        // className: "draggable",
-        // width: 400,
-        // filters: [
-        //     { text: "Aoe", value: "Aoe" },
-        //     { text: "Cim", value: "Cim" },
-        // ],
-        // onFilter: (value, record) => record.name.indexOf(value) === 0,
-        // sorter: (a, b) => (a.name < b.name ? -1 : 1),
-        // sortDirections: ["ascend", "descend"],
     },
     {
         title: "Age",
         dataIndex: "age",
         key: "age",
-        // className: "draggable",
-
-        // filters: [
-        //     { text: "18+", value: "18" },
-        //     { text: "30+", value: "30" },
-        // ],
-        // onFilter: (value, record) => record.age >= value,
-        // sorter: (a, b) => a.age - b.age,
     },
     {
         title: "Address",
         dataIndex: "address",
         key: "address",
-        // width: 600,
-        // className: "draggable",
     },
 ];
 
@@ -97,37 +73,29 @@ const data = [
 ];
 
 function App() {
-    // const people = useSelector((state) => state.people);
-    // const dispatch = useDispatch();
-    // const deleteColumn = {
-    //     title: "Action",
-    //     key: "action",
-    //     render: (text, record) => (
-    //         <Space size="middle">
-    //             <span
-    //                 className="delete-row"
-    //                 onClick={() => dispatch(deletePerson(record.id))}
-    //             >
-    //                 Delete
-    //             </span>
-    //         </Space>
-    //     ),
-    //     className: "draggable",
-    //     width: 200,
-    // };
-
-    const [tableColumns, setTablecolumns] = useState([...columns]);
-    const [tableData, setTableData] = useState([...data]);
+    const [tableColumns, setTablecolumns] = useState([]);
+    const [tableData, setTableData] = useState([]);
     const [toggleNav, setToggleNav] = useState(false);
-    const searchInput = useRef(null);
     const [search, setSearch] = useState({ searchText: "", searchColumn: "" });
-    const stateRef = useRef();
-    stateRef.current = search;
 
-    const getColumnSearchProps = useCallback(
-        (dataIndex) => ({
-            width: 300,
-            filterDropdown: ({
+    const handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        setSearch({ searchText: selectedKeys[0], searchColumn: dataIndex });
+    };
+
+    const handleReset = (clearFilters) => {
+        clearFilters();
+    };
+
+    const focusInput = (id) => {
+        document.getElementById(id).select();
+    };
+
+    const loadData = (columns) =>
+        columns.reduce((result, curritem) => {
+            curritem.id = v4();
+            curritem.width = 300;
+            curritem.filterDropdown = ({
                 setSelectedKeys,
                 selectedKeys,
                 confirm,
@@ -135,8 +103,8 @@ function App() {
             }) => (
                 <div style={{ padding: 8 }}>
                     <Input
-                        ref={(node) => (searchInput.current = node)}
-                        placeholder={`Search ${dataIndex}`}
+                        id={curritem.id}
+                        placeholder={`Search ${curritem.dataIndex}`}
                         value={selectedKeys[0]}
                         onChange={(e) =>
                             setSelectedKeys(
@@ -144,16 +112,23 @@ function App() {
                             )
                         }
                         onPressEnter={() =>
-                            handleSearch(selectedKeys, confirm, dataIndex)
+                            handleSearch(
+                                selectedKeys,
+                                confirm,
+                                curritem.dataIndex
+                            )
                         }
                         style={{ marginBottom: 8, display: "block" }}
-                        focus={{ cursor: "all" }}
                     />
                     <Space>
                         <Button
                             type="primary"
                             onClick={() =>
-                                handleSearch(selectedKeys, confirm, dataIndex)
+                                handleSearch(
+                                    selectedKeys,
+                                    confirm,
+                                    curritem.dataIndex
+                                )
                             }
                             icon={<SearchOutlined />}
                             size="small"
@@ -173,117 +148,95 @@ function App() {
                             size="small"
                             onClick={() => {
                                 confirm({ closeDropdown: false });
-                                setSearch({
-                                    searchText: selectedKeys[0],
-                                    searchColumn: dataIndex,
-                                });
-                                // setSearchText(selectedKeys[0]);
-                                // setSearchedColumn(dataIndex);
-                                // this.setState({
-                                //     searchText: selectedKeys[0],
-                                //     searchedColumn: dataIndex,
-                                // });
                             }}
                         >
                             Filter
                         </Button>
                     </Space>
                 </div>
-            ),
-            filterIcon: (filtered) => (
+            );
+            curritem.filterIcon = (filtered) => (
                 <SearchOutlined
                     style={{ color: filtered ? "#1890ff" : undefined }}
                 />
-            ),
-            onFilter: (value, record) =>
-                record[dataIndex]
-                    ? record[dataIndex]
+            );
+            curritem.onFilter = (value, record) =>
+                record[curritem.dataIndex]
+                    ? record[curritem.dataIndex]
                           .toString()
                           .toLowerCase()
                           .includes(value.toLowerCase())
-                    : "",
-            onFilterDropdownVisibleChange: (visible) => {
+                    : "";
+            curritem.onFilterDropdownVisibleChange = (visible) => {
                 if (visible) {
-                    setTimeout(() => searchInput.current.select(), 100);
+                    setTimeout(() => focusInput(curritem.id), 100);
                 }
-            },
-            render: (text) =>
-                stateRef.current.searchColumn === dataIndex ? (
-                    <Highlighter
-                        highlightStyle={{
-                            backgroundColor: "#ffc069",
-                            padding: 0,
-                        }}
-                        searchWords={[stateRef.current.searchText]}
-                        autoEscape={true}
-                        textToHighlight={text ? text.toString() : ""}
-                    />
-                ) : (
-                    text
-                ),
-        }),
-        []
-    );
+            };
+            curritem.render = (text) => (
+                <Highlighter
+                    highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+                    searchWords={[search.searchText]}
+                    autoEscape
+                    textToHighlight={text ? text.toString() : ""}
+                />
+            );
 
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm();
-        setSearch({ searchText: selectedKeys[0], searchColumn: dataIndex });
+            result.push(curritem);
+            return result;
+        }, []);
 
-        // setSearchedColumn(dataIndex);
-        // setSearchText(selectedKeys[0]);
-        // this.setState({
-        //     searchText: selectedKeys[0],
-        //     searchedColumn: dataIndex,
-        // });
-    };
-
-    const handleReset = (clearFilters) => {
-        clearFilters();
-        setSearch({
-            searchText: "",
-            searchColumn: "",
-        });
-        // setSearchText("");
-        // this.setState({ searchText: "" });
-    };
+    const AddDeleteRow = () => ({
+        title: "Action",
+        key: "action",
+        render: (text, record) => (
+            <Space size="middle">
+                <span
+                    className="delete-row"
+                    onClick={() => deleteRow(record.id)}
+                >
+                    <DeleteFilled />
+                </span>
+            </Space>
+        ),
+        className: "draggable delete-column",
+        width: 80,
+    });
 
     useEffect(() => {
-        setTablecolumns((prev) => {
-            let columns = [...prev];
-            columns = columns.map((el) => {
-                return { ...el, ...getColumnSearchProps(el.dataIndex) };
-            });
-            return [...columns];
-        });
-    }, [getColumnSearchProps]);
+        let ColData = loadData(columns);
+        ColData.push(AddDeleteRow());
+        setTablecolumns(ColData);
+        setTableData(data);
 
-    useEffect(() => {
-        setTablecolumns((prev) => {
-            return [
-                ...prev,
-                {
-                    title: "Action",
-                    key: "action",
-                    render: (text, record) => (
-                        <Space size="middle">
-                            <span
-                                className="delete-row"
-                                onClick={() => deleteRow(record.id)}
-                            >
-                                Delete
-                            </span>
-                        </Space>
-                    ),
-                    className: "draggable",
-                    width: 200,
-                },
-            ];
-        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const deleteRow = (id) => {
+        setTableData((prev) => {
+            let data = prev.reduce((result, curritem) => {
+                if (curritem.id !== id) {
+                    result.push(curritem);
+                }
+                return result;
+            }, []);
+
+            return data;
+        });
+    };
+
+    const OnSubmit = (values) => {
+        let row = values;
+        row.id = v4();
+        row.key = v4();
+        setTableData((prev) => {
+            let prevData = [...prev];
+            prevData.push(row);
+            return prevData;
+        });
+    };
 
     const dragProps = {
         onDragEnd(fromIndex, toIndex) {
-            // if (fromIndex === 0 || toIndex === 0) return;
             const data = [...tableColumns];
             const item = data.splice(fromIndex, 1)[0];
             data.splice(toIndex, 0, item);
@@ -302,24 +255,6 @@ function App() {
     };
     const onClose = () => {
         setVisibleDrawer(false);
-    };
-
-    const deleteRow = (id) => {
-        setTableData((prev) => {
-            let data = [...prev];
-            data = data.filter((el) => el.id !== id);
-            return [...data];
-        });
-    };
-
-    const OnSubmit = (values) => {
-        // dispatch(addPerson(values));
-        let row = { ...values };
-        row.id = v4();
-        row.key = v4();
-        setTableData((prev) => {
-            return [...prev, { ...row }];
-        });
     };
 
     return (
@@ -382,6 +317,7 @@ function App() {
                                 size="middle"
                                 pagination={{ position: ["none"] }}
                                 scroll={{ x: "max-content", y: 440 }}
+                                bordered="true"
                             />
                         </ReactDragListView>
                     </div>
