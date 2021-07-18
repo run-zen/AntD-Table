@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Table, Space } from "antd";
 import Highlighter from "react-highlight-words";
 import { Layout, Menu, Breadcrumb, Button, Input } from "antd";
@@ -10,6 +10,10 @@ import {
 import ReactDragListView from "react-drag-listview";
 import AddDrawer from "./components/AddDrawer";
 import { v4 } from "uuid";
+import { Tabs } from "antd";
+import { Bar, Scatter } from "react-chartjs-2";
+
+const { TabPane } = Tabs;
 
 const { Header, Content, Footer } = Layout;
 
@@ -44,7 +48,27 @@ const data = [
         name: "Bohn Brown",
         age: 25,
         address: "New York No. 1 Lake Park",
-        tags: ["nice", "developer"],
+        bar: [1, 2, 3, 4],
+        barLabels: ["2017", "2018", "2019", "2020"],
+        scatter: [
+            {
+                x: -10,
+                y: 0,
+            },
+            {
+                x: 0,
+                y: 10,
+            },
+            {
+                x: 10,
+                y: 5,
+            },
+            {
+                x: 0.5,
+                y: 5.5,
+            },
+        ],
+        scatterLabel: "scatter",
     },
     {
         id: v4(),
@@ -52,7 +76,27 @@ const data = [
         name: "Cim Green",
         age: 42,
         address: "London No. 1 Lake Park",
-        tags: ["loser"],
+        bar: [1, 2, 3, 4],
+        barLabels: ["2017", "2018", "2019", "2020"],
+        scatter: [
+            {
+                x: -10,
+                y: 0,
+            },
+            {
+                x: 0,
+                y: 10,
+            },
+            {
+                x: 10,
+                y: 5,
+            },
+            {
+                x: 0.5,
+                y: 5.5,
+            },
+        ],
+        scatterLabel: "scatter",
     },
     {
         id: v4(),
@@ -60,7 +104,27 @@ const data = [
         name: "Aoe Black",
         age: 32,
         address: "Sidney No. 1 Lake Park",
-        tags: ["cool", "teacher"],
+        bar: [1, 2, 3, 4],
+        barLabels: ["2017", "2018", "2019", "2020"],
+        scatter: [
+            {
+                x: -10,
+                y: 0,
+            },
+            {
+                x: 0,
+                y: 10,
+            },
+            {
+                x: 10,
+                y: 5,
+            },
+            {
+                x: 0.5,
+                y: 5.5,
+            },
+        ],
+        scatterLabel: "scatter",
     },
     {
         id: v4(),
@@ -68,15 +132,39 @@ const data = [
         name: "Zoe Zal",
         age: 16,
         address: "Sidney No. 1 Lake Park",
-        tags: ["cool", "teacher"],
+        bar: [4, 2, 6, 9],
+        barLabels: ["2017", "2018", "2019", "2020"],
+        scatter: [
+            {
+                x: -10,
+                y: 0,
+            },
+            {
+                x: 0,
+                y: 10,
+            },
+            {
+                x: 10,
+                y: 5,
+            },
+            {
+                x: 0.5,
+                y: 5.5,
+            },
+        ],
+        scatterLabel: "scatter",
     },
 ];
 
 function App() {
     const [tableColumns, setTablecolumns] = useState([]);
-    const [tableData, setTableData] = useState([]);
+    const [tableData, setTableData] = useState(data);
     const [toggleNav, setToggleNav] = useState(false);
     const [search, setSearch] = useState({ searchText: "", searchColumn: "" });
+    const searchRef = useRef(null);
+    searchRef.current = search;
+    const ref = useRef(null);
+    ref.current = tableData;
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
@@ -85,6 +173,7 @@ function App() {
 
     const handleReset = (clearFilters) => {
         clearFilters();
+        setSearch({ searchText: "", searchColumn: "" });
     };
 
     const focusInput = (id) => {
@@ -93,8 +182,9 @@ function App() {
 
     const loadData = (columns) =>
         columns.reduce((result, curritem) => {
+            curritem.className = "draggable";
             curritem.id = v4();
-            curritem.width = 300;
+            curritem.width = "10%";
             curritem.filterDropdown = ({
                 setSelectedKeys,
                 selectedKeys,
@@ -172,14 +262,20 @@ function App() {
                     setTimeout(() => focusInput(curritem.id), 100);
                 }
             };
-            curritem.render = (text) => (
-                <Highlighter
-                    highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-                    searchWords={[search.searchText]}
-                    autoEscape
-                    textToHighlight={text ? text.toString() : ""}
-                />
-            );
+            curritem.render = (text) =>
+                searchRef.current.searchColumn === curritem.dataIndex ? (
+                    <Highlighter
+                        highlightStyle={{
+                            backgroundColor: "#ffc069",
+                            padding: 0,
+                        }}
+                        searchWords={[searchRef.current.searchText]}
+                        autoEscape
+                        textToHighlight={text ? text.toString() : ""}
+                    />
+                ) : (
+                    text
+                );
 
             result.push(curritem);
             return result;
@@ -199,30 +295,116 @@ function App() {
             </Space>
         ),
         className: "draggable delete-column",
-        width: 80,
+        width: "5%",
+    });
+    const chartColumn = () => ({
+        title: "Chart",
+        key: "chart",
+        dataIndex: "chart",
+        width: "50%",
+        render: (text, record, index) => (
+            <>
+                <Tabs defaultActiveKey="1" tabPosition={"top"} centered>
+                    <TabPane tab="Bar Chart" key="1">
+                        <Bar
+                            data={{
+                                labels: record.barLabels,
+                                datasets: [
+                                    {
+                                        label: null,
+                                        data: record.bar,
+                                        backgroundColor: [
+                                            "hsla(0,50%,50%,0.2)",
+                                            "rgba(54, 162, 235, 0.2)",
+                                            "rgba(255, 206, 86, 0.2)",
+                                            "rgba(75, 192, 192, 0.2)",
+                                        ],
+                                        borderColor: [
+                                            "hsla(0,50%,50%,1)",
+                                            "rgba(54, 162, 235, 1)",
+                                            "rgba(255, 206, 86, 1)",
+                                            "rgba(75, 192, 192, 1)",
+                                        ],
+                                        borderWidth: 1,
+                                    },
+                                ],
+                            }}
+                            height={200}
+                            options={{
+                                indexAxis: "y",
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        display: false,
+                                        grid: {
+                                            display: false,
+                                        },
+                                    },
+                                    y: {
+                                        beginAtZero: true,
+                                        display: true,
+                                    },
+                                },
+                                plugins: {
+                                    legend: {
+                                        display: false,
+                                    },
+                                },
+                            }}
+                        />
+                    </TabPane>
+                    <TabPane tab="Scatter Chart" key="2">
+                        <Scatter
+                            data={{
+                                datasets: [
+                                    {
+                                        label: record.scatterLabel,
+                                        data: record.scatter,
+                                        backgroundColor: "red",
+                                    },
+                                ],
+                            }}
+                            height={200}
+                            options={{ maintainAspectRatio: false }}
+                        />
+                    </TabPane>
+                </Tabs>
+            </>
+        ),
     });
 
-    useEffect(() => {
-        let ColData = loadData(columns);
-        ColData.push(AddDeleteRow());
-        setTablecolumns(ColData);
-        setTableData(data);
+    const serialNumCol = () => ({
+        title: "Sl No.",
+        key: "serialnum",
+        render: (text, record, index) => index,
+        width: "5%",
+    });
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    const AddCustomColumns = (column) => {
+        column.push(AddDeleteRow());
+        column.push(chartColumn());
+        column.unshift(serialNumCol());
+        return [...column];
+    };
+
+    useEffect(() => {
+        console.log("i am here");
+        let ColData = AddCustomColumns(loadData(columns));
+        setTablecolumns(ColData);
     }, []);
 
-    const deleteRow = (id) => {
-        setTableData((prev) => {
-            let data = prev.reduce((result, curritem) => {
-                if (curritem.id !== id) {
-                    result.push(curritem);
-                }
-                return result;
-            }, []);
+    function deleteRow(id = 0) {
+        if (id === 0) {
+            let data = [...tableData];
+            data.pop();
+            return setTableData(data);
+        }
 
-            return data;
-        });
-    };
+        let data = ref.current.filter((el) => el.id !== id);
+        console.log(data);
+        setTableData([...data]);
+        return;
+    }
 
     const OnSubmit = (values) => {
         let row = values;
@@ -305,6 +487,7 @@ function App() {
                             <PlusCircleFilled />
                             Add
                         </Button>
+
                         <AddDrawer
                             onClose={onClose}
                             visible={visibleDrawer}
@@ -316,7 +499,7 @@ function App() {
                                 dataSource={tableData}
                                 size="middle"
                                 pagination={{ position: ["none"] }}
-                                scroll={{ x: "max-content", y: 440 }}
+                                scroll={{ x: "100%", y: "70vh" }}
                                 bordered="true"
                             />
                         </ReactDragListView>
