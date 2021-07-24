@@ -1,5 +1,7 @@
 import HighchartsReact from "highcharts-react-official";
 import highcharts from "highcharts";
+import highchartstimeline from "highcharts/modules/timeline";
+highchartstimeline(highcharts);
 
 function BarChart(props) {
     return (
@@ -7,61 +9,64 @@ function BarChart(props) {
             highcharts={highcharts}
             options={{
                 chart: {
-                    type: "bar",
-                    height: "50px",
+                    zoomType: "x",
+                    type: "timeline",
                 },
-                title: null,
+                xAxis: {
+                    type: "datetime",
+                    visible: false,
+                },
+                yAxis: {
+                    gridLineWidth: 1,
+                    title: null,
+                    labels: {
+                        enabled: false,
+                    },
+                },
                 legend: {
                     enabled: false,
                 },
-                xAxis: {
-                    visible: false,
-                    gridLineWidth: 0,
-                    title: {
-                        enabled: false,
-                    },
-                    labels: {
-                        enabled: false,
+                title: {
+                    text: "",
+                },
+                subtitle: {
+                    text: "",
+                },
+                tooltip: {
+                    style: {
+                        width: 300,
                     },
                 },
-                yAxis: {
-                    visible: false,
-                    gridLineWidth: 0,
-                    max: 400,
-                    reversedStacks: false,
-                    title: {
-                        enabled: false,
-                    },
-                    labels: {
-                        enabled: false,
-                    },
-                },
-                plotOptions: {
-                    series: {
-                        stacking: "normal",
-                    },
-                },
-                series: [
-                    {
-                        name: "2017",
-                        data: [props.data[0]],
-                    },
-                    {
-                        name: "2018",
-                        data: [props.data[1]],
-                    },
-                    {
-                        name: "2019",
-                        data: [props.data[2]],
-                    },
-                    {
-                        name: "2020",
-                        data: [props.data[3]],
-                    },
-                ],
                 credits: {
                     enabled: false,
                 },
+                series: [
+                    {
+                        dataLabels: {
+                            allowOverlap: false,
+                            format:
+                                '<span style="color:{point.color}">● </span><span style="font-weight: bold;" > ' +
+                                "{point.x:%d %b %Y}</span><br/>{point.label}",
+                        },
+                        marker: {
+                            symbol: "circle",
+                        },
+                        data: [
+                            {
+                                x: 1514764800000,
+                                name: "Event name",
+                                label: "Event label",
+                                description: "Description of this event.",
+                            },
+                            {
+                                x: 1526774400000,
+                                name: "Event name",
+                                label: "Another event label",
+                                description: "Description of second event",
+                            },
+                        ],
+                    },
+                ],
             }}
         />
     );

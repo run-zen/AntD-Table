@@ -1,4 +1,4 @@
-import { List } from "antd";
+import { List, Typography } from "antd";
 // import { Bar } from "react-chartjs-2";
 // import ChartDataLabels from "chartjs-plugin-datalabels";
 import BarChart from "./customHighChart";
@@ -19,7 +19,15 @@ const data = [
 ];
 
 export const chartColumn = () => ({
-    title: <div>chart</div>,
+    title: (
+        <List
+            size="large"
+            header={<div>Header</div>}
+            grid={{ gutter: 16, column: 4 }}
+            dataSource={data}
+            renderItem={(item) => <List.Item>{item.title}</List.Item>}
+        />
+    ),
     key: "chart",
     dataIndex: "chart",
     width: "50%",
