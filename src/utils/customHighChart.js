@@ -73,7 +73,6 @@ function BarChart(props) {
             highcharts={highcharts}
             options={{
                 chart: {
-                    zoomType: "x",
                     type: "timeline",
                     height: "50px",
                 },
@@ -82,7 +81,7 @@ function BarChart(props) {
                     visible: false,
                 },
                 yAxis: {
-                    gridLineWidth: 1,
+                    gridLineWidth: 0,
                     title: null,
                     labels: {
                         enabled: false,
@@ -92,30 +91,24 @@ function BarChart(props) {
                     enabled: false,
                 },
                 title: null,
-                subtitle: {
-                    text: "",
-                },
+                subtitle: null,
                 tooltip: {
-                    style: {
-                        width: 300,
-                    },
+                    outside: true,
+                    hideDelay: 10,
                 },
                 credits: {
                     enabled: false,
-                },
-                plotOptions: {
-                    series: {
-                        color: "red",
-                    },
                 },
                 series: [
                     {
                         dataLabels: {
                             enabled: false,
-                            allowOverlap: false,
-                            format:
+                        },
+                        tooltip: {
+                            headerFormat:
                                 '<span style="color:{point.color}">● </span><span style="font-weight: bold;" > ' +
-                                "{point.x:%d %b %Y}</span><br/>{point.label}",
+                                "{point.x:%d %b %Y}</span><br/>",
+                            pointFormat: `<div>{point.label}</div><br/>{point.description}`,
                         },
                         marker: {
                             symbol: "circle",
