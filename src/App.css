@@ -93,7 +93,7 @@ tr th.draggable {
     transition-duration: 0.4s;
 }
 .delete-row {
-    color: rgb(10, 10, 10);
+    color: rgb(0, 0, 0);
     font-size: 20px;
     cursor: pointer;
 }
@@ -114,12 +114,6 @@ tr th.draggable {
 .delete-column {
     text-align: center;
 }
-.years {
-    /* background-color: #000d1a; */
-    /* border: 2px solid red; */
-    height: 100%;
-    width: 100%;
-}
 
 .ant-list-item {
     padding: 0;
@@ -132,11 +126,47 @@ tr th.draggable {
 .ant-list-header {
     text-align: center;
 }
-.year-tab {
-    /* background-color: #000d1a; */
-    /* border: 2px solid red; */
-    height: 100%;
+
+.year-cell {
+    height: 80px;
     text-align: center;
-    padding-bottom: 10px;
-    border-bottom: 2px solid red;
+    margin: 3px 7px;
+}
+.header-center {
+    height: 40px;
+    /* border: 2px solid red; */
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.years {
+    /* border: 2px solid red; */
+    min-height: 40px;
+    min-width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.year {
+    width: 25%;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    border-bottom: 3px solid #000d1a;
+    box-shadow: 0 10px 15px -13px rgb(32, 32, 32);
+}
+.year-blue {
+    color: blue;
+    border-bottom: 4px solid blue;
+}
+.year-red {
+    color: red;
+    border-bottom: 4px solid red;
+}
+.year-green {
+    color: green;
+    border-bottom: 4px solid green;
+}
+.year-orange {
+    color: orange;
+    border-bottom: 4px solid orange;
 }

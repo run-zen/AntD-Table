@@ -10,7 +10,7 @@ import {
 import ReactDragListView from "react-drag-listview";
 import AddDrawer from "./components/AddDrawer";
 import { v4 } from "uuid";
-import { chartColumn } from "./utils/customBarChart";
+import { chartColumn } from "./utils/customChartColumn";
 
 const { Header, Content, Footer } = Layout;
 
@@ -73,13 +73,13 @@ const data = [
                 description: "Description of this event.",
             },
             {
-                x: Date.UTC(2019),
+                x: Date.UTC(2019, 2, 31),
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
             },
             {
-                x: Date.UTC(2019, 12, 20),
+                x: Date.UTC(2020, 2, 20),
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
@@ -121,13 +121,13 @@ const data = [
                 description: "Description of this event.",
             },
             {
-                x: Date.UTC(2019),
+                x: Date.UTC(2019, 10, 1),
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
             },
             {
-                x: Date.UTC(2020, 11, 31),
+                x: Date.UTC(2020, 11, 30),
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
@@ -175,7 +175,7 @@ const data = [
                 description: "Description of second event",
             },
             {
-                x: Date.UTC(2020, 1, 1),
+                x: Date.UTC(2020, 7, 1),
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
@@ -217,13 +217,25 @@ const data = [
                 description: "Description of this event.",
             },
             {
-                x: Date.UTC(2019),
+                x: Date.UTC(2019, 6, 25),
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
             },
             {
-                x: Date.UTC(2020, 8, 20),
+                x: Date.UTC(2018, 1, 20),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+            {
+                x: Date.UTC(2018, 10, 20),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+            {
+                x: Date.UTC(2020, 2, 20),
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",

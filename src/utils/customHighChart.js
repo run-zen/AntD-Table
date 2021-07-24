@@ -6,7 +6,6 @@ highchartstimeline(highcharts);
 
 function BarChart(props) {
     const [data, setdata] = useState([]);
-    const [zones, setZones] = useState([]);
 
     const prepareData = () => {
         let data = [...props.data];
@@ -20,109 +19,81 @@ function BarChart(props) {
             } else if (year === 2019) {
                 currItem.color = "green";
             } else if (year === 2020) {
-                currItem.color = "yellow";
+                currItem.color = "orange";
             }
             Result.push(currItem);
             return Result;
         }, []);
-        data.unshift({
-            x: Date.UTC(2017, 0, 1),
-            name: "start",
-            dataLabels: {
-                enabled: false,
-            },
-            color: "rgba(0,0,0,0)",
-        });
-        data.push({
-            x: Date.UTC(2020, 12, 30),
-            name: "end",
-            color: "rgba(0,0,0,0)",
-        });
 
         return data;
     };
 
-    const prepareZones = () => {
-        let zones = [
-            {
-                value: "first Date",
-                color: "rgba(0,0,0,0)",
-            },
-
-            {
-                value: "lastDate + 1",
-                color: "grey",
-            },
-            {
-                color: "rgba(0,0,0,0)",
-            },
-        ];
-        const len = props.data.length;
-        zones[0].value = props.data[0].x;
-        zones[1].value = props.data[len - 1].x + 1;
-
-        return zones;
-    };
-
     useEffect(() => {
         setdata(prepareData());
-        setZones(prepareZones());
     }, []);
+
+    const plotOptions = {
+        series: {
+            tooltip: {
+                className: "tooltip",
+                headerFormat: `<span style="color:{point.color}">● </span><span style="font-weight: bold;" >{point.x:%d %b %Y}</span><br/>`,
+                pointFormat: `<div>{point.name}</div><br/><div>{point.description}</div>`,
+            },
+        },
+    };
+
+    const genOptions = {
+        chart: {
+            type: "timeline",
+            height: "60px",
+        },
+        xAxis: {
+            type: "datetime",
+            visible: false,
+            min: Date.UTC(2016, 11, 31),
+            max: Date.UTC(2020, 11, 31),
+        },
+        yAxis: {
+            gridLineWidth: 0,
+            title: null,
+            labels: {
+                enabled: false,
+            },
+        },
+        legend: {
+            enabled: false,
+        },
+        title: null,
+        subtitle: null,
+        credits: {
+            enabled: false,
+        },
+        tooltip: {
+            outside: true,
+            hideDelay: 10,
+        },
+    };
+
     return (
         <HighchartsReact
             highcharts={highcharts}
             options={{
-                chart: {
-                    zoomType: "x",
-                    type: "timeline",
-                    height: "50px",
-                },
-                xAxis: {
-                    type: "datetime",
-                    visible: false,
-                },
-                yAxis: {
-                    gridLineWidth: 1,
-                    title: null,
-                    labels: {
-                        enabled: false,
-                    },
-                },
-                legend: {
-                    enabled: false,
-                },
-                title: null,
-                subtitle: {
-                    text: "",
-                },
-                tooltip: {
-                    style: {
-                        width: 300,
-                    },
-                },
-                credits: {
-                    enabled: false,
-                },
-                plotOptions: {
-                    series: {
-                        color: "red",
-                    },
-                },
+                ...genOptions,
+                plotOptions: plotOptions,
                 series: [
                     {
                         dataLabels: {
                             enabled: false,
-                            allowOverlap: false,
-                            format:
-                                '<span style="color:{point.color}">● </span><span style="font-weight: bold;" > ' +
-                                "{point.x:%d %b %Y}</span><br/>{point.label}",
+                            // allowOverlap: false,
+                            // format:
+                            //     '<span style="color:{point.color}">● </span><span style="font-weight: bold;" > ' +
+                            //     "{point.x:%d %b %Y}</span><br/>{point.label}",
                         },
                         marker: {
                             symbol: "circle",
+                            radius: 8,
                         },
-                        lineWidth: 2,
-                        zoneAxis: "x",
-                        zones: zones,
+                        lineWidth: 3,
                         data: data,
                     },
                 ],
