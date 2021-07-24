@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Table, Space } from "antd";
 import Highlighter from "react-highlight-words";
-import { Layout, Menu, Breadcrumb, Button, Input } from "antd";
+import { Layout, Menu, Breadcrumb, Button, Input, Popconfirm } from "antd";
 import {
     PlusCircleFilled,
     SearchOutlined,
@@ -10,10 +10,7 @@ import {
 import ReactDragListView from "react-drag-listview";
 import AddDrawer from "./components/AddDrawer";
 import { v4 } from "uuid";
-import { Tabs } from "antd";
-import { Bar, Scatter } from "react-chartjs-2";
-
-const { TabPane } = Tabs;
+import { chartColumn } from "./utils/customBarChart";
 
 const { Header, Content, Footer } = Layout;
 
@@ -48,8 +45,7 @@ const data = [
         name: "Bohn Brown",
         age: 25,
         address: "New York No. 1 Lake Park",
-        bar: [1, 2, 3, 4],
-        barLabels: ["2017", "2018", "2019", "2020"],
+        bar: [100, 50, 30, 80],
         scatter: [
             {
                 x: -10,
@@ -76,8 +72,8 @@ const data = [
         name: "Cim Green",
         age: 42,
         address: "London No. 1 Lake Park",
-        bar: [1, 2, 3, 4],
-        barLabels: ["2017", "2018", "2019", "2020"],
+        bar: [25, 50, 30, 80],
+
         scatter: [
             {
                 x: -10,
@@ -104,8 +100,8 @@ const data = [
         name: "Aoe Black",
         age: 32,
         address: "Sidney No. 1 Lake Park",
-        bar: [1, 2, 3, 4],
-        barLabels: ["2017", "2018", "2019", "2020"],
+        bar: [90, 80, 50, 45],
+
         scatter: [
             {
                 x: -10,
@@ -132,8 +128,8 @@ const data = [
         name: "Zoe Zal",
         age: 16,
         address: "Sidney No. 1 Lake Park",
-        bar: [4, 2, 6, 9],
-        barLabels: ["2017", "2018", "2019", "2020"],
+        bar: [30, 40, 60, 80],
+
         scatter: [
             {
                 x: -10,
@@ -286,91 +282,18 @@ function App() {
         key: "action",
         render: (text, record) => (
             <Space size="middle">
-                <span
-                    className="delete-row"
-                    onClick={() => deleteRow(record.id)}
-                >
-                    <DeleteFilled />
+                <span className="delete-row">
+                    <Popconfirm
+                        title="Sure to delete?"
+                        onConfirm={() => deleteRow(record.id)}
+                    >
+                        <DeleteFilled />
+                    </Popconfirm>
                 </span>
             </Space>
         ),
         className: "draggable delete-column",
         width: "5%",
-    });
-    const chartColumn = () => ({
-        title: "Chart",
-        key: "chart",
-        dataIndex: "chart",
-        width: "50%",
-        render: (text, record, index) => (
-            <>
-                <Tabs defaultActiveKey="1" tabPosition={"top"} centered>
-                    <TabPane tab="Bar Chart" key="1">
-                        <Bar
-                            data={{
-                                labels: record.barLabels,
-                                datasets: [
-                                    {
-                                        label: null,
-                                        data: record.bar,
-                                        backgroundColor: [
-                                            "hsla(0,50%,50%,0.2)",
-                                            "rgba(54, 162, 235, 0.2)",
-                                            "rgba(255, 206, 86, 0.2)",
-                                            "rgba(75, 192, 192, 0.2)",
-                                        ],
-                                        borderColor: [
-                                            "hsla(0,50%,50%,1)",
-                                            "rgba(54, 162, 235, 1)",
-                                            "rgba(255, 206, 86, 1)",
-                                            "rgba(75, 192, 192, 1)",
-                                        ],
-                                        borderWidth: 1,
-                                    },
-                                ],
-                            }}
-                            height={200}
-                            options={{
-                                indexAxis: "y",
-                                maintainAspectRatio: false,
-                                scales: {
-                                    x: {
-                                        display: false,
-                                        grid: {
-                                            display: false,
-                                        },
-                                    },
-                                    y: {
-                                        beginAtZero: true,
-                                        display: true,
-                                    },
-                                },
-                                plugins: {
-                                    legend: {
-                                        display: false,
-                                    },
-                                },
-                            }}
-                        />
-                    </TabPane>
-                    <TabPane tab="Scatter Chart" key="2">
-                        <Scatter
-                            data={{
-                                datasets: [
-                                    {
-                                        label: record.scatterLabel,
-                                        data: record.scatter,
-                                        backgroundColor: "red",
-                                    },
-                                ],
-                            }}
-                            height={200}
-                            options={{ maintainAspectRatio: false }}
-                        />
-                    </TabPane>
-                </Tabs>
-            </>
-        ),
     });
 
     const serialNumCol = () => ({
@@ -391,6 +314,7 @@ function App() {
         console.log("i am here");
         let ColData = AddCustomColumns(loadData(columns));
         setTablecolumns(ColData);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function deleteRow(id = 0) {

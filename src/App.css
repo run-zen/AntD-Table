@@ -114,3 +114,24 @@ tr th.draggable {
 .delete-column {
     text-align: center;
 }
+.years {
+    /* background-color: #000d1a; */
+    /* border: 2px solid red; */
+    height: 100%;
+    width: 100%;
+}
+
+.ant-list-item {
+    padding: 0;
+    margin-top: 5%;
+    margin-bottom: 10px;
+    height: 20%;
+}
+.year-tab {
+    /* background-color: #000d1a; */
+    /* border: 2px solid red; */
+    height: 100%;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid red;
+}
