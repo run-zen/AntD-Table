@@ -65,6 +65,26 @@ const data = [
             },
         ],
         scatterLabel: "scatter",
+        timeline: [
+            {
+                x: Date.UTC(2017, 1, 1),
+                name: "Event name",
+                label: "Event label",
+                description: "Description of this event.",
+            },
+            {
+                x: Date.UTC(2019),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+            {
+                x: Date.UTC(2019, 12, 20),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+        ],
     },
     {
         id: v4(),
@@ -93,6 +113,26 @@ const data = [
             },
         ],
         scatterLabel: "scatter",
+        timeline: [
+            {
+                x: Date.UTC(2017, 6, 1),
+                name: "Event name",
+                label: "Event label",
+                description: "Description of this event.",
+            },
+            {
+                x: Date.UTC(2019),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+            {
+                x: Date.UTC(2020, 11, 31),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+        ],
     },
     {
         id: v4(),
@@ -121,6 +161,26 @@ const data = [
             },
         ],
         scatterLabel: "scatter",
+        timeline: [
+            {
+                x: Date.UTC(2018),
+                name: "Event name",
+                label: "Event label",
+                description: "Description of this event.",
+            },
+            {
+                x: Date.UTC(2019, 6, 1),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+            {
+                x: Date.UTC(2020, 1, 1),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+        ],
     },
     {
         id: v4(),
@@ -149,6 +209,26 @@ const data = [
             },
         ],
         scatterLabel: "scatter",
+        timeline: [
+            {
+                x: Date.UTC(2017, 8, 20),
+                name: "Event name",
+                label: "Event label",
+                description: "Description of this event.",
+            },
+            {
+                x: Date.UTC(2019),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+            {
+                x: Date.UTC(2020, 8, 20),
+                name: "Event name",
+                label: "Another event label",
+                description: "Description of second event",
+            },
+        ],
     },
 ];
 

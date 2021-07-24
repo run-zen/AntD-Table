@@ -1,4 +1,4 @@
-import { List, Typography } from "antd";
+import { List } from "antd";
 // import { Bar } from "react-chartjs-2";
 // import ChartDataLabels from "chartjs-plugin-datalabels";
 import BarChart from "./customHighChart";
@@ -41,7 +41,7 @@ export const chartColumn = () => ({
         }
         return (
             <>
-                <BarChart data={row.bar} />
+                <BarChart data={row.timeline} />
                 {/* <div className="barCharts">
                     <Row gutter={10}>
                         {data.map((el, index) => {

@@ -1,9 +1,73 @@
+import React, { useState, useEffect } from "react";
 import HighchartsReact from "highcharts-react-official";
 import highcharts from "highcharts";
 import highchartstimeline from "highcharts/modules/timeline";
 highchartstimeline(highcharts);
 
 function BarChart(props) {
+    const [data, setdata] = useState([]);
+    const [zones, setZones] = useState([]);
+
+    const prepareData = () => {
+        let data = [...props.data];
+        data = data.reduce((Result, currItem, index) => {
+            const date = new Date(currItem.x);
+            const year = date.getFullYear();
+            if (year === 2017) {
+                currItem.color = "blue";
+            } else if (year === 2018) {
+                currItem.color = "red";
+            } else if (year === 2019) {
+                currItem.color = "green";
+            } else if (year === 2020) {
+                currItem.color = "yellow";
+            }
+            Result.push(currItem);
+            return Result;
+        }, []);
+        data.unshift({
+            x: Date.UTC(2017, 0, 1),
+            name: "start",
+            dataLabels: {
+                enabled: false,
+            },
+            color: "rgba(0,0,0,0)",
+        });
+        data.push({
+            x: Date.UTC(2020, 12, 30),
+            name: "end",
+            color: "rgba(0,0,0,0)",
+        });
+
+        return data;
+    };
+
+    const prepareZones = () => {
+        let zones = [
+            {
+                value: "first Date",
+                color: "rgba(0,0,0,0)",
+            },
+
+            {
+                value: "lastDate + 1",
+                color: "grey",
+            },
+            {
+                color: "rgba(0,0,0,0)",
+            },
+        ];
+        const len = props.data.length;
+        zones[0].value = props.data[0].x;
+        zones[1].value = props.data[len - 1].x + 1;
+
+        return zones;
+    };
+
+    useEffect(() => {
+        setdata(prepareData());
+        setZones(prepareZones());
+    }, []);
     return (
         <HighchartsReact
             highcharts={highcharts}
@@ -11,6 +75,7 @@ function BarChart(props) {
                 chart: {
                     zoomType: "x",
                     type: "timeline",
+                    height: "50px",
                 },
                 xAxis: {
                     type: "datetime",
@@ -26,9 +91,7 @@ function BarChart(props) {
                 legend: {
                     enabled: false,
                 },
-                title: {
-                    text: "",
-                },
+                title: null,
                 subtitle: {
                     text: "",
                 },
@@ -40,9 +103,15 @@ function BarChart(props) {
                 credits: {
                     enabled: false,
                 },
+                plotOptions: {
+                    series: {
+                        color: "red",
+                    },
+                },
                 series: [
                     {
                         dataLabels: {
+                            enabled: false,
                             allowOverlap: false,
                             format:
                                 '<span style="color:{point.color}">● </span><span style="font-weight: bold;" > ' +
@@ -51,20 +120,10 @@ function BarChart(props) {
                         marker: {
                             symbol: "circle",
                         },
-                        data: [
-                            {
-                                x: 1514764800000,
-                                name: "Event name",
-                                label: "Event label",
-                                description: "Description of this event.",
-                            },
-                            {
-                                x: 1526774400000,
-                                name: "Event name",
-                                label: "Another event label",
-                                description: "Description of second event",
-                            },
-                        ],
+                        lineWidth: 2,
+                        zoneAxis: "x",
+                        zones: zones,
+                        data: data,
                     },
                 ],
             }}
