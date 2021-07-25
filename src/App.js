@@ -67,19 +67,19 @@ const data = [
         scatterLabel: "scatter",
         timeline: [
             {
-                x: Date.UTC(2017, 1, 1),
+                date: "Jan 1 2017",
                 name: "Event name",
                 label: "Event label",
                 description: "Description of this event.",
             },
             {
-                x: Date.UTC(2019),
+                date: "Jan 1 2019",
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
             },
             {
-                x: Date.UTC(2019, 12, 20),
+                date: "Dec 20 2019",
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
@@ -115,19 +115,19 @@ const data = [
         scatterLabel: "scatter",
         timeline: [
             {
-                x: Date.UTC(2017, 6, 1),
+                date: "Jun 1 2017",
                 name: "Event name",
                 label: "Event label",
                 description: "Description of this event.",
             },
             {
-                x: Date.UTC(2019),
+                date: "Jan 1 2019",
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
             },
             {
-                x: Date.UTC(2020, 11, 31),
+                date: "Dec 31 2020",
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
@@ -163,19 +163,19 @@ const data = [
         scatterLabel: "scatter",
         timeline: [
             {
-                x: Date.UTC(2018),
+                date: "Jan 1 2018",
                 name: "Event name",
                 label: "Event label",
                 description: "Description of this event.",
             },
             {
-                x: Date.UTC(2019, 6, 1),
+                date: "Jun 28 2019",
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
             },
             {
-                x: Date.UTC(2020, 1, 1),
+                date: "Jan 1 2020",
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
@@ -211,19 +211,19 @@ const data = [
         scatterLabel: "scatter",
         timeline: [
             {
-                x: Date.UTC(2017, 8, 20),
+                date: "Aug 20 2017",
                 name: "Event name",
                 label: "Event label",
                 description: "Description of this event.",
             },
             {
-                x: Date.UTC(2019),
+                date: "Jan 1 2019",
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",
             },
             {
-                x: Date.UTC(2020, 8, 20),
+                date: "Aug 20 2020",
                 name: "Event name",
                 label: "Another event label",
                 description: "Description of second event",

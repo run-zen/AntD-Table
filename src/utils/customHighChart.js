@@ -11,8 +11,11 @@ function BarChart(props) {
     const prepareData = () => {
         let data = [...props.data];
         data = data.reduce((Result, currItem, index) => {
-            const date = new Date(currItem.x);
+            const date = new Date(currItem.date);
             const year = date.getFullYear();
+            const month = date.getMonth();
+            const day = date.getDate();
+            currItem.x = Date.UTC(year, month, day);
             if (year === 2017) {
                 currItem.color = "blue";
             } else if (year === 2018) {
