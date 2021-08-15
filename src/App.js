@@ -1,40 +1,41 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Table, Space } from "antd";
-import Highlighter from "react-highlight-words";
-import { Layout, Menu, Breadcrumb, Button, Input, Popconfirm } from "antd";
+import React, { useState, useEffect, useRef } from 'react';
+import { Table, Space } from 'antd';
+import Highlighter from 'react-highlight-words';
+import { Layout, Menu, Breadcrumb, Button, Input, Popconfirm } from 'antd';
 import {
     PlusCircleFilled,
     SearchOutlined,
     DeleteFilled,
-} from "@ant-design/icons";
-import ReactDragListView from "react-drag-listview";
-import AddDrawer from "./components/AddDrawer";
-import { v4 } from "uuid";
-import { chartColumn } from "./utils/customBarChart";
+} from '@ant-design/icons';
+import ReactDragListView from 'react-drag-listview';
+import AddDrawer from './components/AddDrawer';
+import { v4 } from 'uuid';
+import { chartColumn } from './utils/customBarChart';
+import { HazardRatioColumn } from './utils/HazardRatioColumn';
 
 const { Header, Content, Footer } = Layout;
 
-const openSideNav = { right: "0px" };
-const closeSideNav = { right: "-250px" };
-const rotateTop = { transform: "rotateZ(-135deg)" };
-const rotateBottom = { transform: "rotateZ(135deg)" };
-const moveMiddle = { transform: "translateX(35px)", opacity: "0" };
+const openSideNav = { right: '0px' };
+const closeSideNav = { right: '-250px' };
+const rotateTop = { transform: 'rotateZ(-135deg)' };
+const rotateBottom = { transform: 'rotateZ(135deg)' };
+const moveMiddle = { transform: 'translateX(35px)', opacity: '0' };
 
 const columns = [
     {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
     },
     {
-        title: "Age",
-        dataIndex: "age",
-        key: "age",
+        title: 'Age',
+        dataIndex: 'age',
+        key: 'age',
     },
     {
-        title: "Address",
-        dataIndex: "address",
-        key: "address",
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
     },
 ];
 
@@ -42,113 +43,70 @@ const data = [
     {
         id: v4(),
         key: v4(),
-        name: "Bohn Brown",
+        name: 'This the header of group number One',
+        type: 'group header',
+    },
+    {
+        id: v4(),
+        key: v4(),
+        name: 'Bohn Brown',
         age: 25,
-        address: "New York No. 1 Lake Park",
+        address: 'New York No. 1 Lake Park',
         bar: [100, 50, 30, 80],
-        scatter: [
-            {
-                x: -10,
-                y: 0,
-            },
-            {
-                x: 0,
-                y: 10,
-            },
-            {
-                x: 10,
-                y: 5,
-            },
-            {
-                x: 0.5,
-                y: 5.5,
-            },
-        ],
-        scatterLabel: "scatter",
+        hazardRatio: {
+            target1: 0.6,
+            target2: 3,
+            min: 0,
+            max: 1,
+        },
     },
     {
         id: v4(),
         key: v4(),
-        name: "Cim Green",
+        name: 'Cim Green',
         age: 42,
-        address: "London No. 1 Lake Park",
+        address: 'London No. 1 Lake Park',
         bar: [25, 50, 30, 80],
-
-        scatter: [
-            {
-                x: -10,
-                y: 0,
-            },
-            {
-                x: 0,
-                y: 10,
-            },
-            {
-                x: 10,
-                y: 5,
-            },
-            {
-                x: 0.5,
-                y: 5.5,
-            },
-        ],
-        scatterLabel: "scatter",
+        hazardRatio: {
+            target1: 0.15,
+            target2: 3,
+            min: 0,
+            max: 1,
+        },
     },
     {
         id: v4(),
         key: v4(),
-        name: "Aoe Black",
+        name: 'This the header of group number two',
+        type: 'group header',
+    },
+    {
+        id: v4(),
+        key: v4(),
+        name: 'Aoe Black',
         age: 32,
-        address: "Sidney No. 1 Lake Park",
+        address: 'Sidney No. 1 Lake Park',
         bar: [90, 80, 50, 45],
-
-        scatter: [
-            {
-                x: -10,
-                y: 0,
-            },
-            {
-                x: 0,
-                y: 10,
-            },
-            {
-                x: 10,
-                y: 5,
-            },
-            {
-                x: 0.5,
-                y: 5.5,
-            },
-        ],
-        scatterLabel: "scatter",
+        hazardRatio: {
+            target1: 0.79,
+            target2: 3,
+            min: 0,
+            max: 1,
+        },
     },
     {
         id: v4(),
         key: v4(),
-        name: "Zoe Zal",
+        name: 'Zoe Zal',
         age: 16,
-        address: "Sidney No. 1 Lake Park",
+        address: 'Sidney No. 1 Lake Park',
         bar: [30, 40, 60, 80],
-
-        scatter: [
-            {
-                x: -10,
-                y: 0,
-            },
-            {
-                x: 0,
-                y: 10,
-            },
-            {
-                x: 10,
-                y: 5,
-            },
-            {
-                x: 0.5,
-                y: 5.5,
-            },
-        ],
-        scatterLabel: "scatter",
+        hazardRatio: {
+            target1: 0.35,
+            target2: 3,
+            min: 0,
+            max: 1,
+        },
     },
 ];
 
@@ -156,7 +114,7 @@ function App() {
     const [tableColumns, setTablecolumns] = useState([]);
     const [tableData, setTableData] = useState(data);
     const [toggleNav, setToggleNav] = useState(false);
-    const [search, setSearch] = useState({ searchText: "", searchColumn: "" });
+    const [search, setSearch] = useState({ searchText: '', searchColumn: '' });
     const searchRef = useRef(null);
     searchRef.current = search;
     const ref = useRef(null);
@@ -169,7 +127,7 @@ function App() {
 
     const handleReset = (clearFilters) => {
         clearFilters();
-        setSearch({ searchText: "", searchColumn: "" });
+        setSearch({ searchText: '', searchColumn: '' });
     };
 
     const focusInput = (id) => {
@@ -177,10 +135,10 @@ function App() {
     };
 
     const loadData = (columns) =>
-        columns.reduce((result, curritem) => {
-            curritem.className = "draggable";
+        columns.reduce((result, curritem, currindex) => {
+            curritem.className = 'draggable';
             curritem.id = v4();
-            curritem.width = "10%";
+            curritem.width = '10%';
             curritem.filterDropdown = ({
                 setSelectedKeys,
                 selectedKeys,
@@ -204,7 +162,7 @@ function App() {
                                 curritem.dataIndex
                             )
                         }
-                        style={{ marginBottom: 8, display: "block" }}
+                        style={{ marginBottom: 8, display: 'block' }}
                     />
                     <Space>
                         <Button
@@ -243,7 +201,7 @@ function App() {
             );
             curritem.filterIcon = (filtered) => (
                 <SearchOutlined
-                    style={{ color: filtered ? "#1890ff" : undefined }}
+                    style={{ color: filtered ? '#1890ff' : undefined }}
                 />
             );
             curritem.onFilter = (value, record) =>
@@ -252,66 +210,90 @@ function App() {
                           .toString()
                           .toLowerCase()
                           .includes(value.toLowerCase())
-                    : "";
+                    : '';
             curritem.onFilterDropdownVisibleChange = (visible) => {
                 if (visible) {
                     setTimeout(() => focusInput(curritem.id), 100);
                 }
             };
-            curritem.render = (text) =>
-                searchRef.current.searchColumn === curritem.dataIndex ? (
-                    <Highlighter
-                        highlightStyle={{
-                            backgroundColor: "#ffc069",
-                            padding: 0,
-                        }}
-                        searchWords={[searchRef.current.searchText]}
-                        autoEscape
-                        textToHighlight={text ? text.toString() : ""}
-                    />
-                ) : (
-                    text
-                );
+            curritem.render = (text, row) => {
+                const obj = {
+                    children: text,
+                    props: {},
+                };
+                if (searchRef.current.searchColumn === curritem.dataIndex) {
+                    obj.children = (
+                        <Highlighter
+                            highlightStyle={{
+                                backgroundColor: '#ffc069',
+                                padding: 0,
+                            }}
+                            searchWords={[searchRef.current.searchText]}
+                            autoEscape
+                            textToHighlight={text ? text.toString() : ''}
+                        />
+                    );
+                }
+                if (row.type) {
+                    if (currindex === 0) {
+                        obj.props.colSpan = 5;
+                    } else {
+                        obj.props.colSpan = 0;
+                    }
+                }
+                return obj;
+            };
 
             result.push(curritem);
             return result;
         }, []);
 
     const AddDeleteRow = () => ({
-        title: "Action",
-        key: "action",
-        render: (text, record) => (
-            <Space size="middle">
-                <span className="delete-row">
-                    <Popconfirm
-                        title="Sure to delete?"
-                        onConfirm={() => deleteRow(record.id)}
-                    >
-                        <DeleteFilled />
-                    </Popconfirm>
-                </span>
-            </Space>
-        ),
-        className: "draggable delete-column",
-        width: "5%",
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => {
+            const obj = {
+                children: null,
+                props: {},
+            };
+            if (!record.type) {
+                obj.children = (
+                    <Space size="middle">
+                        <span className="delete-row">
+                            <Popconfirm
+                                title="Sure to delete?"
+                                onConfirm={() => deleteRow(record.id)}
+                            >
+                                <DeleteFilled />
+                            </Popconfirm>
+                        </span>
+                    </Space>
+                );
+            } else {
+                obj.props.colSpan = 0;
+            }
+            return obj;
+        },
+        className: 'draggable delete-column',
+        width: '5%',
     });
 
-    const serialNumCol = () => ({
-        title: "Sl No.",
-        key: "serialnum",
-        render: (text, record, index) => index,
-        width: "5%",
-    });
+    // const serialNumCol = () => ({
+    //     title: 'Sl No.',
+    //     key: 'serialnum',
+    //     render: (text, record, index) => index,
+    //     width: '5%',
+    // });
 
     const AddCustomColumns = (column) => {
         column.push(AddDeleteRow());
-        column.push(chartColumn());
-        column.unshift(serialNumCol());
+        column.push(HazardRatioColumn());
+
         return [...column];
     };
 
     useEffect(() => {
-        console.log("i am here");
+        console.log('i am here');
         let ColData = AddCustomColumns(loadData(columns));
         setTablecolumns(ColData);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -348,7 +330,7 @@ function App() {
             data.splice(toIndex, 0, item);
             setTablecolumns(data);
         },
-        nodeSelector: "th.draggable",
+        nodeSelector: 'th.draggable',
     };
 
     function toggleSidebar() {
@@ -379,7 +361,7 @@ function App() {
                     <Menu
                         theme="dark"
                         mode="horizontal"
-                        defaultSelectedKeys={["1"]}
+                        defaultSelectedKeys={['1']}
                     >
                         <Menu.Item key="1">{`Home`}</Menu.Item>
                     </Menu>
@@ -390,16 +372,16 @@ function App() {
                     onClick={toggleSidebar}
                     style={
                         toggleNav
-                            ? { position: "fixed" }
-                            : { position: "absolute" }
+                            ? { position: 'fixed' }
+                            : { position: 'absolute' }
                     }
                 >
                     <div style={toggleNav ? rotateTop : null}></div>
                     <div style={toggleNav ? moveMiddle : null}></div>
                     <div style={toggleNav ? rotateBottom : null}></div>
                 </div>
-                <Content style={{ padding: "0 50px" }}>
-                    <Breadcrumb style={{ margin: "16px 0" }}>
+                <Content style={{ padding: '0 50px' }}>
+                    <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>{`Home`}</Breadcrumb.Item>
                     </Breadcrumb>
                     <div className="site-layout-content">
@@ -422,14 +404,14 @@ function App() {
                                 columns={tableColumns}
                                 dataSource={tableData}
                                 size="middle"
-                                pagination={{ position: ["none"] }}
-                                scroll={{ x: "100%", y: "70vh" }}
+                                pagination={{ position: ['none'] }}
+                                scroll={{ x: '100%', y: '70vh' }}
                                 bordered="true"
                             />
                         </ReactDragListView>
                     </div>
                 </Content>
-                <Footer style={{ textAlign: "center" }}>
+                <Footer style={{ textAlign: 'center' }}>
                     Ant Design ©2018 Created by Ant UED
                 </Footer>
             </Layout>

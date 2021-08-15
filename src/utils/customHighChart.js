@@ -1,14 +1,14 @@
-import HighchartsReact from "highcharts-react-official";
-import highcharts from "highcharts";
+import HighchartsReact from 'highcharts-react-official';
+import highcharts from 'highcharts';
 
-function BarChart(props) {
+function CustomHighChartBar(props) {
     return (
         <HighchartsReact
             highcharts={highcharts}
             options={{
                 chart: {
-                    type: "bar",
-                    height: "50px",
+                    type: 'bar',
+                    height: '50px',
                 },
                 title: null,
                 legend: {
@@ -38,24 +38,24 @@ function BarChart(props) {
                 },
                 plotOptions: {
                     series: {
-                        stacking: "normal",
+                        stacking: 'normal',
                     },
                 },
                 series: [
                     {
-                        name: "2017",
+                        name: '2017',
                         data: [props.data[0]],
                     },
                     {
-                        name: "2018",
+                        name: '2018',
                         data: [props.data[1]],
                     },
                     {
-                        name: "2019",
+                        name: '2019',
                         data: [props.data[2]],
                     },
                     {
-                        name: "2020",
+                        name: '2020',
                         data: [props.data[3]],
                     },
                 ],
@@ -67,4 +67,4 @@ function BarChart(props) {
     );
 }
 
-export default BarChart;
+export default CustomHighChartBar;
